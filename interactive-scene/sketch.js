@@ -1,3 +1,4 @@
+
 // Project Title
 // Your Name
 // Date
@@ -11,6 +12,16 @@ function setup() {
 }
 
 function draw() {
-  background(220);
-  circle(200, 200, 50)
+  background(0);
+  strokeWeight(20);
+  stroke('white');
+  line(windowWidth/2, 200, windowWidth/2, 600);
+
+  let y = 25;
+  while (y<height){
+    stroke('white');
+    strokeWeight(5);
+    line(width/2-10, y, width/2+10, y);
+    y += 10;
+  }
 }
