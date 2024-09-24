@@ -2,6 +2,7 @@
 
 ## Demos
 - [Moving Square](moving-square)
+-[Traffic Light](traffic-light)
 
 ## Projects
-- [Interactive Scene](interaactive-scene)
+- [Interactive Scene](interactive-scene)
