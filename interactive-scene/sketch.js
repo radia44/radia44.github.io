@@ -9,6 +9,7 @@
 let millipede = [];
 let totalSegments = 65;
 let segmentLength = 15;
+let legOffset = 10;
 let direction;
 
 function setup() {
@@ -49,6 +50,19 @@ function draw() {
       fill(222, 255, 0);
       noStroke();
       square(millipede[i].x, millipede[i].y, segmentLength);  // Draw each segment
+      
+      // Add legs to each segment (nested loop)
+      
+      for (let j = 0; j < 2; j++){
+        let legOffsetX = legOffset * (j === 0 ? -1: 1); // uses if else statement to decide whether the leg is going to be on the right side or left side
+        let legX = millipede[i].x + legOffsetX;
+        let legY = millipede[i].y;
+            
+        fill("purple");  // Leg color
+        rect(legX, legY, 10, 5);
+                                          
+      }   
+
     }
     
   }
