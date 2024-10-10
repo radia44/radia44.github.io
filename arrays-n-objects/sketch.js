@@ -13,3 +13,11 @@ let arrowData = [
   ,{key: 'ArrowRight', symbol: '→', x: 250,}
 ];
 
+class Arrow {
+  constructor(type, x) {
+    this.type = type;
+    this.x = x;
+    this.y = 0;
+    this.size = 50;
+  }
+}
