@@ -5,7 +5,9 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+
 let arrows = [];
+
 let arrowData = [
   ,{key: 'ArrowUp', symbol: '↑', x: 100,}
   ,{key: 'ArrowLeft', symbol: '←', x: 150}
@@ -13,11 +15,9 @@ let arrowData = [
   ,{key: 'ArrowRight', symbol: '→', x: 250,}
 ];
 
+let speed = 3;
+let score = 0;
+
 class Arrow {
-  constructor(type, x) {
-    this.type = type;
-    this.x = x;
-    this.y = 0;
-    this.size = 50;
-  }
+  constructor
 }
