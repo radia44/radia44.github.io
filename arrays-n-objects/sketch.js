@@ -9,10 +9,10 @@ let backgroundMusic;
 let video;
 let arrows = [];
 let arrowData = [
-  { key: 'ArrowUp', symbol: '↑', x: 100 },
-  { key: 'ArrowRight', symbol: '→', x: 200 },
+  { key: 'ArrowLeft', symbol: '←', x: 100 },
+  { key: 'ArrowUp', symbol: '↑', x: 200 },
   { key: 'ArrowDown', symbol: '↓', x: 300 },
-  { key: 'ArrowLeft', symbol: '←', x: 400 }
+  { key: 'ArrowRight', symbol: '→', x: 400 },
 ];
 let speed = 3;
 let score = 0;
@@ -104,11 +104,10 @@ function draw() {
       arrows.splice(i, 1);
     }
   }
-
-  // Display the player's score
+  // Track the score
   fill(255);
   textSize(32);
-  text(`Score: ${score}`, 10, 40);
+  text(`Score: ${score}`, 25, 40);
 }
 
 function keyPressed() {
