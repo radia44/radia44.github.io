@@ -14,9 +14,46 @@ let arrowData = [
   { key: 'ArrowDown', symbol: '↓', x: 300 },
   { key: 'ArrowRight', symbol: '→', x: 400 },
 ];
-let speed = 3;
+let speed = 13;
 let score = 0;
-let videoPlaying = false; // Flag to track video play status
+
+// Flag to track video play status
+let videoPlaying = false;
+
+// Beatmap data
+let beatmap = [ 
+  { type: '←', time: 333 },
+  { type: '←', time: 666 },
+  { type: '←', time: 999 },
+  { type: '↑', time: 1200 },
+  { type: '←', time: 1467 },
+  { type: '→', time: 1733 },
+  { type: '←', time: 2000 },
+  { type: '→', time: 2500 },
+  { type: '↑', time: 3000 },
+  { type: '↓', time: 3333 },
+  { type: '→', time: 3666 },
+  { type: '↑', time: 4500 },
+  { type: '→', time: 5000 },
+  { type: '↑', time: 5333 },
+  { type: '↓', time: 5666 },
+  { type: '→', time: 6000 },
+  { type: '←', time: 7000 },
+  { type: '→', time: 7500 },
+  { type: '↑', time: 8000 },
+  { type: '↓', time: 8500 },
+  { type: '↑', time: 9000 },
+  { type: '←', time: 9500 },
+  { type: '↑', time: 10000 },
+  { type: '→', time: 10300 },
+  { type: '↑', time: 11000 },
+  { type: '↑', time: 12000 },
+  { type: '↓', time: 12333 },
+  { type: '→', time: 12666 },
+  { type: '←', time: 13000 }
+];
+
+let currentBeatmapIndex = 0;
 
 function preload() {
   // Load the background music from the assets folder
@@ -76,11 +113,7 @@ function setup() {
       backgroundMusic.loop();  // Play the music in a loop
     };
 
-    // Generate new arrows every second
-    setInterval(() => {
-      let randomArrow = random(arrowData);
-      arrows.push(new Arrow(randomArrow.symbol, randomArrow.x));
-    }, 1000);
+    let nowTime = millis();
   };
 }
 
@@ -104,6 +137,22 @@ function draw() {
       arrows.splice(i, 1);
     }
   }
+
+  // Check if the current time matches the beatmap for arrow generation
+  let nowTime = millis();
+
+  if (currentBeatmapIndex < beatmap.length && nowTime >= beatmap[currentBeatmapIndex].time) {
+    let arrowType = beatmap[currentBeatmapIndex].type;
+    let arrowInfo = arrowData.find(arrow => arrow.symbol === arrowType);
+    if (arrowInfo) {
+      arrows.push(new Arrow(arrowInfo.symbol, arrowInfo.x)); // Add the new arrow from beatmap
+    }
+    currentBeatmapIndex++;
+  }
+
+
+  // Check if the current time matches the beatmap for arrow generation
+
   // Track the score
   fill(255);
   textSize(32);
