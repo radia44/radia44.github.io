@@ -8,6 +8,7 @@
 - [Perlin Noise Ball](perlin)
 - [Terrain Generation](terrain)
 - [Bubble Demo](bubble)
+- [Translate/Rotate Demo](translaterotate)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](arrays-n-objects)

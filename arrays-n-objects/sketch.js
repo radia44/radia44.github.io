@@ -14,43 +14,44 @@ let arrowData = [
   { key: 'ArrowDown', symbol: '↓', x: 300 },
   { key: 'ArrowRight', symbol: '→', x: 400 },
 ];
-let speed = 13;
+let speed = 10;
 let score = 0;
+let img;
 
 // Flag to track video play status
 let videoPlaying = false;
 
 // Beatmap data
 let beatmap = [ 
-  { type: '←', time: 333 },
-  { type: '←', time: 666 },
-  { type: '←', time: 999 },
-  { type: '↑', time: 1200 },
-  { type: '←', time: 1467 },
-  { type: '→', time: 1733 },
-  { type: '←', time: 2000 },
-  { type: '→', time: 2500 },
-  { type: '↑', time: 3000 },
-  { type: '↓', time: 3333 },
-  { type: '→', time: 3666 },
-  { type: '↑', time: 4500 },
-  { type: '→', time: 5000 },
-  { type: '↑', time: 5333 },
-  { type: '↓', time: 5666 },
-  { type: '→', time: 6000 },
-  { type: '←', time: 7000 },
-  { type: '→', time: 7500 },
-  { type: '↑', time: 8000 },
-  { type: '↓', time: 8500 },
-  { type: '↑', time: 9000 },
-  { type: '←', time: 9500 },
-  { type: '↑', time: 10000 },
-  { type: '→', time: 10300 },
-  { type: '↑', time: 11000 },
-  { type: '↑', time: 12000 },
-  { type: '↓', time: 12333 },
-  { type: '→', time: 12666 },
-  { type: '←', time: 13000 }
+  { type: '←', time: 133 },
+  { type: '←', time: 466 },
+  { type: '←', time: 799 },
+  { type: '↑', time: 1000 },
+  { type: '←', time: 1267 },
+  { type: '→', time: 1533 },
+  { type: '←', time: 1800 },
+  { type: '→', time: 2200 },
+  { type: '↑', time: 2800 },
+  { type: '↓', time: 3133 },
+  { type: '→', time: 3466 },
+  { type: '↑', time: 4300 },
+  { type: '→', time: 4800 },
+  { type: '↑', time: 5133 },
+  { type: '↓', time: 5266 },
+  { type: '→', time: 5600 },
+  { type: '←', time: 6800 },
+  { type: '→', time: 7300 },
+  { type: '↑', time: 7800 },
+  { type: '↓', time: 8300 },
+  { type: '↑', time: 8800 },
+  { type: '←', time: 9300 },
+  { type: '↑', time: 9800 },
+  { type: '→', time: 10100 },
+  { type: '↑', time: 10800 },
+  { type: '↑', time: 11800 },
+  { type: '↓', time: 12133 },
+  { type: '→', time: 12466 },
+  { type: '←', time: 12800}
 ];
 
 let currentBeatmapIndex = 0;
@@ -175,4 +176,10 @@ function keyPressed() {
       break;
     }
   }
+  if (gameState === "start" && key === ' ') {
+    gameState = "playing"; // Switch to gameplay when spacebar is pressed
+  }
+}
+
+function showStartScreen() {
 }
