@@ -15,43 +15,40 @@ let arrowData = [
 ];
 let speed = 10;
 let score = 0;
-
-// Beatmap data
-let beatmap = [ 
-  { type: '←', time: 133 },
-  { type: '←', time: 466 },
-  { type: '←', time: 799 },
-  { type: '↑', time: 1000 },
-  { type: '←', time: 1267 },
-  { type: '→', time: 1533 },
-  { type: '←', time: 1800 },
-  { type: '→', time: 2200 },
-  { type: '↑', time: 2800 },
-  { type: '↓', time: 3133 },
-  { type: '→', time: 3466 },
-  { type: '↑', time: 4300 },
-  { type: '→', time: 4800 },
-  { type: '↑', time: 5133 },
-  { type: '↓', time: 5266 },
-  { type: '→', time: 5600 },
-  { type: '←', time: 6800 },
-  { type: '→', time: 7300 },
-  { type: '↑', time: 7800 },
-  { type: '↓', time: 8300 },
-  { type: '↑', time: 8800 },
-  { type: '←', time: 9300 },
-  { type: '↑', time: 9800 },
-  { type: '→', time: 10100 },
-  { type: '↑', time: 10800 },
-  { type: '↑', time: 11800 },
-  { type: '↓', time: 12133 },
-  { type: '→', time: 12466 },
-  { type: '←', time: 12800 }
-];
-
-let currentBeatmapIndex = 0;
+let songDuration = 15000; // Set this to match your music duration
 let gameState = "start"; // Game states: 'start', 'playing', 'ended'
-let songDuration = 15000; // Set an approximate duration for the song in milliseconds
+let currentBeatmapIndex = 0;
+let beatmap = [ 
+  { type: '←', time: 333 },
+  { type: '←', time: 666 },
+  { type: '←', time: 999 },
+  { type: '↑', time: 1200 },
+  { type: '←', time: 1467 },
+  { type: '→', time: 1733 },
+  { type: '←', time: 2000 },
+  { type: '→', time: 2500 },
+  { type: '↑', time: 3000 },
+  { type: '↓', time: 3333 },
+  { type: '→', time: 3666 },
+  { type: '↑', time: 4500 },
+  { type: '→', time: 5000 },
+  { type: '↑', time: 5333 },
+  { type: '↓', time: 5666 },
+  { type: '→', time: 6000 },
+  { type: '←', time: 7000 },
+  { type: '→', time: 7500 },
+  { type: '↑', time: 8000 },
+  { type: '↓', time: 8500 },
+  { type: '↑', time: 9000 },
+  { type: '←', time: 9500 },
+  { type: '↑', time: 10000 },
+  { type: '→', time: 10300 },
+  { type: '↑', time: 11000 },
+  { type: '↑', time: 12000 },
+  { type: '↓', time: 12333 },
+  { type: '→', time: 12666 },
+  { type: '←', time: 13000 }
+];
 
 function preload() {
   // Load the background music from the assets folder
@@ -105,7 +102,6 @@ function showStartScreen() {
 }
 
 function playGame() {
-  // Play the background music if it's not playing
   if (!backgroundMusic.isPlaying()) {
     backgroundMusic.loop();  // Play the music in a loop
   }
@@ -125,7 +121,7 @@ function playGame() {
     }
   }
 
-  // Generate arrows according to the beatmap
+  // Check the beatmap for generating arrows
   let nowTime = millis();
   if (currentBeatmapIndex < beatmap.length && nowTime >= beatmap[currentBeatmapIndex].time) {
     let arrowType = beatmap[currentBeatmapIndex].type;
@@ -136,20 +132,19 @@ function playGame() {
     currentBeatmapIndex++;
   }
 
-  // Display the player's score
+  // Display score
   fill(255);
   textSize(32);
   text(`Score: ${score}`, 25, 40);
 
-  // Check if the song is over
+  // End the game when the song duration is over
   if (nowTime >= songDuration) {
-    gameState = "ended"; // Switch to end state when the song ends
+    gameState = "ended"; // Switch to end state
     backgroundMusic.stop(); // Stop the music
   }
 }
 
 function showEndScreen() {
-  background(0);
   fill(255);
   textSize(40);
   textAlign(CENTER, CENTER);
@@ -158,7 +153,7 @@ function showEndScreen() {
 
 function keyPressed() {
   if (gameState === "start" && key === ' ') {
-    gameState = "playing"; // Switch to gameplay when spacebar is pressed
+    gameState = "playing"; // Start the game when spacebar is pressed
   }
 
   if (gameState === "playing") {
