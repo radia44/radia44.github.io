@@ -25,7 +25,7 @@ let beatmap = [
 
 function preload() {
   // Load the background music from the assets folder
-  backgroundMusic = loadSound('assets/Berserk intro (HD).mp3');
+  backgroundMusic = loadSound('Berserk intro (HD).mp3');
   
   // Load the video from assets folder
   video = createVideo('assets/Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
