@@ -22,11 +22,6 @@ let beatmap = [
   // Add the rest of your beatmap entries here...
 ];
 
-function preload() {
-  // Load the background music from the assets folder
-  backgroundMusic = loadSound('Crazy Rich Asians Official Soundtrack Wo Yao Ni De Ai Grace Chang WaterTower.mp3');
-}
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
 }
