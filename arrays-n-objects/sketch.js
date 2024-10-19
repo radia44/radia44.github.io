@@ -1,11 +1,5 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
-
 let backgroundMusic;
+let video;
 let arrows = [];
 let arrowData = [
   { key: 'ArrowLeft', symbol: '←', x: 100 },
@@ -52,7 +46,10 @@ let beatmap = [
 
 function preload() {
   // Load the background music from the assets folder
-  backgroundMusic = loadSound('Berserk intro (HD).mp3');
+  backgroundMusic = loadSound('assets/Berserk intro (HD).mp3');
+  // Load the video from the assets folder
+  video = createVideo('assets/Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
+  video.hide(); // Hide video controls initially
 }
 
 class Arrow {
@@ -80,6 +77,7 @@ class Arrow {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  noLoop(); // Initially stop drawing (wait for user interaction)
 }
 
 function draw() {
@@ -105,6 +103,12 @@ function playGame() {
   if (!backgroundMusic.isPlaying()) {
     backgroundMusic.loop();  // Play the music in a loop
   }
+  if (!video.isPlaying()) {
+    video.play(); // Start the video when the game starts
+  }
+
+  // Draw the video as the background
+  image(video, 0, 0, width, height);
 
   // Draw target area
   fill(255, 0, 0);
@@ -141,6 +145,7 @@ function playGame() {
   if (nowTime >= songDuration) {
     gameState = "ended"; // Switch to end state
     backgroundMusic.stop(); // Stop the music
+    video.stop(); // Stop the video
   }
 }
 
@@ -154,6 +159,7 @@ function showEndScreen() {
 function keyPressed() {
   if (gameState === "start" && key === ' ') {
     gameState = "playing"; // Start the game when spacebar is pressed
+    loop(); // Start the game loop
   }
 
   if (gameState === "playing") {
