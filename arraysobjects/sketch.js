@@ -24,7 +24,7 @@ let beatmap = [
 
 function preload() {
   // Load the background music from the assets folder
-  backgroundMusic = loadSound('assets/Berserk intro (HD).mp3');
+  backgroundMusic = loadSound('Crazy Rich Asians Official Soundtrack Wo Yao Ni De Ai Grace Chang WaterTower.mp3');
 }
 
 function setup() {
