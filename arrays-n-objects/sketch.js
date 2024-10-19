@@ -9,81 +9,113 @@ let arrowData = [
 ];
 let speed = 10;
 let score = 0;
-let gameState = "start"; // To track the game state
-let currentBeatmapIndex = 0;
+let img;
 
-// Beatmap data (time is in milliseconds)
+// Flag to track video play status
+let videoPlaying = false;
+
+// Beatmap data
 let beatmap = [ 
-  { type: '←', time: 333 },
-  { type: '←', time: 666 },
-  { type: '←', time: 999 },
-  { type: '↑', time: 1200 },
-  { type: '←', time: 1467 },
-  { type: '→', time: 1733 },
-  // Add the rest of your beatmap entries here...
+  { type: '←', time: 133 },
+  { type: '←', time: 466 },
+  { type: '←', time: 799 },
+  { type: '↑', time: 1000 },
+  { type: '←', time: 1267 },
+  { type: '→', time: 1533 },
+  { type: '←', time: 1800 },
+  { type: '→', time: 2200 },
+  { type: '↑', time: 2800 },
+  { type: '↓', time: 3133 },
+  { type: '→', time: 3466 },
+  { type: '↑', time: 4300 },
+  { type: '→', time: 4800 },
+  { type: '↑', time: 5133 },
+  { type: '↓', time: 5266 },
+  { type: '→', time: 5600 },
+  { type: '←', time: 6800 },
+  { type: '→', time: 7300 },
+  { type: '↑', time: 7800 },
+  { type: '↓', time: 8300 },
+  { type: '↑', time: 8800 },
+  { type: '←', time: 9300 },
+  { type: '↑', time: 9800 },
+  { type: '→', time: 10100 },
+  { type: '↑', time: 10800 },
+  { type: '↑', time: 11800 },
+  { type: '↓', time: 12133 },
+  { type: '→', time: 12466 },
+  { type: '←', time: 12800}
 ];
+
+let currentBeatmapIndex = 0;
 
 function preload() {
   // Load the background music from the assets folder
   backgroundMusic = loadSound('Berserk intro (HD).mp3');
-  
-  // Load the video from assets folder
-  video = createVideo('Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
-  video.hide(); // Hide default video controls
+}
+
+class Arrow {
+  constructor(type, x) {
+    this.type = type;
+    this.x = x;
+    this.y = 0;
+    this.size = 50;
+  }
+
+  display() {
+    textSize(this.size);
+    textAlign(CENTER, CENTER);
+    text(this.type, this.x, this.y);
+  }
+
+  move() {
+    this.y += speed;
+  }
+
+  isInHitZone() {
+    return this.y >= height - 100 && this.y <= height - 50;
+  }
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  
+  // Ensure the path to the video file is correct
+  video = createVideo('Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
+  video.hide(); // Hide default video controls
+  
+  // Mute the video to allow autoplay
+  video.volume(0);
+  
+  // Play video when loaded, check if it's already playing
+  video.onloadeddata = function() {
+    if (!videoPlaying) {
+
+      video.play(); // Play the video when it's loaded
+      videoPlaying = true; // Set the flag to true
+    }
+  };
+  
+  // Fallback to play video on mouse press
+  mousePressed = function() {
+    if (!videoPlaying) {
+      video.play(); // Play the video when the user clicks
+      videoPlaying = true; // Set the flag to true
+    };
+
+    if (!backgroundMusic.isPlaying()) {
+      backgroundMusic.loop();  // Play the music in a loop
+    };
+
+    let nowTime = millis();
+  };
 }
 
 function draw() {
   background(0);
-
-  if (gameState === "start") {
-    showStartScreen();
-  } else if (gameState === "playing") {
-    playGame();
-  } else if (gameState === "end") {
-    showEndScreen();
-  }
-}
-
-function keyPressed() {
-  if (gameState === "start" && key === ' ') {
-    gameState = "playing"; // Start the game
-    backgroundMusic.loop(); // Start the background music
-    video.play(); // Play the video
-  }
-
-  if (gameState === "playing") {
-    for (let i = arrows.length - 1; i >= 0; i--) {
-      let currentArrow = arrows[i];
-
-      if (
-        currentArrow.isInHitZone() &&
-         ((keyCode === UP_ARROW && currentArrow.type === '↑') ||
-         (keyCode === RIGHT_ARROW && currentArrow.type === '→') ||
-         (keyCode === DOWN_ARROW && currentArrow.type === '↓') ||
-         (keyCode === LEFT_ARROW && currentArrow.type === '←'))
-      ) {
-        score++;
-        arrows.splice(i, 1); // Remove the arrow
-        break;
-      }
-    }
-  }
-}
-
-function showStartScreen() {
-  fill(255);
-  textSize(40);
-  textAlign(CENTER, CENTER);
-  text("Press Space to Start", width / 2, height / 2);
-}
-
-function playGame() {
+  
   // Draw the video as the background
-  image(video, 0, 0, width, height); 
+  image(video, 0, 0, width, height); // Draw the video to cover the entire canvas
 
   // Draw target area
   fill(255, 0, 0);
@@ -112,44 +144,35 @@ function playGame() {
     currentBeatmapIndex++;
   }
 
-  // Display the player's score
+
+  // Check if the current time matches the beatmap for arrow generation
+
+  // Track the score
   fill(255);
   textSize(32);
-  text(`Score: ${score}`, 25, 40);
+  text(Score, $,{score}, 25, 40);
+}
 
-  // End game after music finishes (using music duration)
-  if (backgroundMusic.currentTime() >= backgroundMusic.duration()) {
-    gameState = "end"; // Change game state to end
+function keyPressed() {
+  for (let i = arrows.length - 1; i >= 0; i--) {
+    let currentArrow = arrows[i];
+
+    if (
+      currentArrow.isInHitZone() &&
+       ((keyCode === UP_ARROW && currentArrow.type === '↑') ||
+       (keyCode === RIGHT_ARROW && currentArrow.type === '→') ||
+       (keyCode === DOWN_ARROW && currentArrow.type === '↓') ||
+       (keyCode === LEFT_ARROW && currentArrow.type === '←'))
+    ) {
+      score++;
+      arrows.splice(i, 1); // Remove the arrow
+      break;
+    }
+  }
+  if (gameState === "start" && key === ' ') {
+    gameState = "playing"; // Switch to gameplay when spacebar is pressed
   }
 }
 
-function showEndScreen() {
-  fill(255);
-  textSize(40);
-  textAlign(CENTER, CENTER);
-  text(`Game Over! Your Score: ${score}`, width / 2, height / 2);
-}
-
-// Arrow class definition remains the same
-class Arrow {
-  constructor(type, x) {
-    this.type = type;
-    this.x = x;
-    this.y = 0;
-    this.size = 50;
-  }
-
-  display() {
-    textSize(this.size);
-    textAlign(CENTER, CENTER);
-    text(this.type, this.x, this.y);
-  }
-
-  move() {
-    this.y += speed;
-  }
-
-  isInHitZone() {
-    return this.y >= height - 100 && this.y <= height - 50;
-  }
+function showStartScreen() {
 }
