@@ -1,15 +1,165 @@
-// Project Title
-// Your Name
-// Date
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+let backgroundMusic;
+let video;
+let arrows = [];
+let arrowData = [
+  { key: 'ArrowLeft', symbol: '←', x: 100 },
+  { key: 'ArrowUp', symbol: '↑', x: 200 },
+  { key: 'ArrowDown', symbol: '↓', x: 300 },
+  { key: 'ArrowRight', symbol: '→', x: 400 },
+];
+let speed = 10;
+let score = 0;
+let gameState = "start"; // To track the game state
+let currentBeatmapIndex = 0;
 
+// Beatmap data (time is in milliseconds)
+let beatmap = [ 
+  { type: '←', time: 333 },
+  { type: '←', time: 666 },
+  { type: '←', time: 999 },
+  { type: '↑', time: 1200 },
+  { type: '←', time: 1467 },
+  { type: '→', time: 1733 },
+  // Add the rest of your beatmap entries here...
+];
+
+function preload() {
+  // Load the background music from the assets folder
+  backgroundMusic = loadSound('Berserk intro (HD).mp3');
+  
+  // Load the video from assets folder
+  video = createVideo('Berserk (1997) OP _ 4K 60FPS - Remastering By Criszato (1080p60, h264, youtube).mp4');
+  video.hide(); // Hide default video controls
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  
+  // Check if video is loading correctly
+  console.log("Video loaded:", video);
+  video.onloadeddata = () => {
+    console.log("Video is ready");
+  };
 }
 
 function draw() {
-  background(220);
+  background(0);
+
+  if (gameState === "start") {
+    showStartScreen();
+  } else if (gameState === "playing") {
+    image(video, 0, 0, width, height); // Ensure the video is drawn as the background
+    playGame();
+  } else if (gameState === "end") {
+    showEndScreen();
+  }
 }
+
+function keyPressed() {
+  if (gameState === "start" && key === ' ') {
+    gameState = "playing"; // Start the game
+    backgroundMusic.loop(); // Start the background music
+    
+    // Ensure the video starts playing when space is pressed
+    if (!video.isPlaying()) {
+      video.play();
+    }
+  }
+
+  if (gameState === "playing") {
+    for (let i = arrows.length - 1; i >= 0; i--) {
+      let currentArrow = arrows[i];
+
+      if (
+        currentArrow.isInHitZone() &&
+         ((keyCode === UP_ARROW && currentArrow.type === '↑') ||
+         (keyCode === RIGHT_ARROW && currentArrow.type === '→') ||
+         (keyCode === DOWN_ARROW && currentArrow.type === '↓') ||
+         (keyCode === LEFT_ARROW && currentArrow.type === '←'))
+      ) {
+        score++;
+        arrows.splice(i, 1); // Remove the arrow
+        break;
+      }
+    }
+  }
+}
+
+function showStartScreen() {
+  fill(255);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text("Press Space to Start", width / 2, height / 2);
+}
+
+function playGame() {
+  // Draw target area
+  fill(255, 0, 0);
+  rect(0, height - 100, width, 50);
+
+  // Display and move arrows
+  for (let i = arrows.length - 1; i >= 0; i--) {
+    arrows[i].display();
+    arrows[i].move();
+
+    // Remove arrows that go off the screen
+    if (arrows[i].y > height) {
+      arrows.splice(i, 1);
+    }
+  }
+
+  // Check if the current time matches the beatmap for arrow generation
+  let nowTime = millis();
+
+  if (currentBeatmapIndex < beatmap.length && nowTime >= beatmap[currentBeatmapIndex].time) {
+    let arrowType = beatmap[currentBeatmapIndex].type;
+    let arrowInfo = arrowData.find(arrow => arrow.symbol === arrowType);
+    if (arrowInfo) {
+      arrows.push(new Arrow(arrowInfo.symbol, arrowInfo.x)); // Add the new arrow from beatmap
+    }
+    currentBeatmapIndex++;
+  }
+
+  // Display the player's score
+  fill(255);
+  textSize(32);
+  text(`Score: ${score}`, 25, 40);
+
+  // End game after music finishes (using music duration)
+  if (backgroundMusic.currentTime() >= backgroundMusic.duration()) {
+    gameState = "end"; // Change game state to end
+  }
+}
+
+function showEndScreen() {
+  fill(255);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text(`Game Over! Your Score: ${score}`, width / 2, height / 2);
+}
+
+// Arrow class definition remains the same
+class Arrow {
+  constructor(type, x) {
+    this.type = type;
+    this.x = x;
+    this.y = 0;
+    this.size = 50;
+  }
+
+  display() {
+    textSize(this.size);
+    textAlign(CENTER, CENTER);
+    text(this.type, this.x, this.y);
+  }
+
+  move() {
+    this.y += speed;
+  }
+
+  isInHitZone() {
+    return this.y >= height - 100 && this.y <= height - 50;
+  }
+}
+
+
