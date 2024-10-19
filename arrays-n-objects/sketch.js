@@ -28,7 +28,7 @@ function preload() {
   backgroundMusic = loadSound('Berserk intro (HD).mp3');
   
   // Load the video from assets folder
-  video = createVideo('assets/Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
+  video = createVideo('Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
   video.hide(); // Hide default video controls
 }
 
