@@ -11,4 +11,4 @@
 - [Translate/Rotate Demo](translaterotate)
 ## Projects
 - [Interactive Scene](interactive-scene)
-- [Arrays and Object Notation](arraysobjects)
+- [Arrays Objects](arraysobjects)
