@@ -1,5 +1,4 @@
 let backgroundMusic;
-let video;
 let arrows = [];
 let arrowData = [
   { key: 'ArrowLeft', symbol: '←', x: 100 },
@@ -25,21 +24,11 @@ let beatmap = [
 
 function preload() {
   // Load the background music from the assets folder
-  backgroundMusic = loadSound('Berserk intro (HD).mp3');
-  
-  // Load the video from assets folder
-  video = createVideo('Berserk (1997) OP _ 4K 60FPS - Remastering By Criszato (1080p60, h264, youtube).mp4');
-  video.hide(); // Hide default video controls
+  backgroundMusic = loadSound('assets/Berserk intro (HD).mp3');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  
-  // Check if video is loading correctly
-  console.log("Video loaded:", video);
-  video.onloadeddata = () => {
-    console.log("Video is ready");
-  };
 }
 
 function draw() {
@@ -48,7 +37,6 @@ function draw() {
   if (gameState === "start") {
     showStartScreen();
   } else if (gameState === "playing") {
-    image(video, 0, 0, width, height); // Ensure the video is drawn as the background
     playGame();
   } else if (gameState === "end") {
     showEndScreen();
@@ -59,11 +47,6 @@ function keyPressed() {
   if (gameState === "start" && key === ' ') {
     gameState = "playing"; // Start the game
     backgroundMusic.loop(); // Start the background music
-    
-    // Ensure the video starts playing when space is pressed
-    if (!video.isPlaying()) {
-      video.play();
-    }
   }
 
   if (gameState === "playing") {
@@ -161,5 +144,4 @@ class Arrow {
     return this.y >= height - 100 && this.y <= height - 50;
   }
 }
-
 
