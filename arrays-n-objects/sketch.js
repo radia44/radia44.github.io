@@ -6,7 +6,6 @@
 // - describe what you did to take this project "above and beyond"
 
 let backgroundMusic;
-let video;
 let arrows = [];
 let arrowData = [
   { key: 'ArrowLeft', symbol: '←', x: 100 },
@@ -16,10 +15,6 @@ let arrowData = [
 ];
 let speed = 10;
 let score = 0;
-let img;
-
-// Flag to track video play status
-let videoPlaying = false;
 
 // Beatmap data
 let beatmap = [ 
@@ -51,10 +46,12 @@ let beatmap = [
   { type: '↑', time: 11800 },
   { type: '↓', time: 12133 },
   { type: '→', time: 12466 },
-  { type: '←', time: 12800}
+  { type: '←', time: 12800 }
 ];
 
 let currentBeatmapIndex = 0;
+let gameState = "start"; // Game states: 'start', 'playing', 'ended'
+let songDuration = 15000; // Set an approximate duration for the song in milliseconds
 
 function preload() {
   // Load the background music from the assets folder
@@ -86,43 +83,32 @@ class Arrow {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  
-  // Ensure the path to the video file is correct
-  video = createVideo('Berserk intro (HD) - GG Analysis (720p, h264, youtube).mp4');
-  video.hide(); // Hide default video controls
-  
-  // Mute the video to allow autoplay
-  video.volume(0);
-  
-  // Play video when loaded, check if it's already playing
-  video.onloadeddata = function() {
-    if (!videoPlaying) {
-
-      video.play(); // Play the video when it's loaded
-      videoPlaying = true; // Set the flag to true
-    }
-  };
-  
-  // Fallback to play video on mouse press
-  mousePressed = function() {
-    if (!videoPlaying) {
-      video.play(); // Play the video when the user clicks
-      videoPlaying = true; // Set the flag to true
-    };
-
-    if (!backgroundMusic.isPlaying()) {
-      backgroundMusic.loop();  // Play the music in a loop
-    };
-
-    let nowTime = millis();
-  };
 }
 
 function draw() {
   background(0);
-  
-  // Draw the video as the background
-  image(video, 0, 0, width, height); // Draw the video to cover the entire canvas
+
+  if (gameState === "start") {
+    showStartScreen();
+  } else if (gameState === "playing") {
+    playGame();
+  } else if (gameState === "ended") {
+    showEndScreen();
+  }
+}
+
+function showStartScreen() {
+  fill(255);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text("Press Space to Play", width / 2, height / 2);
+}
+
+function playGame() {
+  // Play the background music if it's not playing
+  if (!backgroundMusic.isPlaying()) {
+    backgroundMusic.loop();  // Play the music in a loop
+  }
 
   // Draw target area
   fill(255, 0, 0);
@@ -139,9 +125,8 @@ function draw() {
     }
   }
 
-  // Check if the current time matches the beatmap for arrow generation
+  // Generate arrows according to the beatmap
   let nowTime = millis();
-
   if (currentBeatmapIndex < beatmap.length && nowTime >= beatmap[currentBeatmapIndex].time) {
     let arrowType = beatmap[currentBeatmapIndex].type;
     let arrowInfo = arrowData.find(arrow => arrow.symbol === arrowType);
@@ -151,35 +136,50 @@ function draw() {
     currentBeatmapIndex++;
   }
 
-
-  // Check if the current time matches the beatmap for arrow generation
-
-  // Track the score
+  // Display the player's score
   fill(255);
   textSize(32);
   text(`Score: ${score}`, 25, 40);
+
+  // Check if the song is over
+  if (nowTime >= songDuration) {
+    gameState = "ended"; // Switch to end state when the song ends
+    backgroundMusic.stop(); // Stop the music
+  }
+}
+
+function showEndScreen() {
+  background(0);
+  fill(255);
+  textSize(40);
+  textAlign(CENTER, CENTER);
+  text(`Game Over! Final Score: ${score}`, width / 2, height / 2);
 }
 
 function keyPressed() {
-  for (let i = arrows.length - 1; i >= 0; i--) {
-    let currentArrow = arrows[i];
-
-    if (
-      currentArrow.isInHitZone() &&
-       ((keyCode === UP_ARROW && currentArrow.type === '↑') ||
-       (keyCode === RIGHT_ARROW && currentArrow.type === '→') ||
-       (keyCode === DOWN_ARROW && currentArrow.type === '↓') ||
-       (keyCode === LEFT_ARROW && currentArrow.type === '←'))
-    ) {
-      score++;
-      arrows.splice(i, 1); // Remove the arrow
-      break;
-    }
-  }
   if (gameState === "start" && key === ' ') {
     gameState = "playing"; // Switch to gameplay when spacebar is pressed
   }
+
+  if (gameState === "playing") {
+    for (let i = arrows.length - 1; i >= 0; i--) {
+      let currentArrow = arrows[i];
+
+      if (
+        currentArrow.isInHitZone() &&
+         ((keyCode === UP_ARROW && currentArrow.type === '↑') ||
+         (keyCode === RIGHT_ARROW && currentArrow.type === '→') ||
+         (keyCode === DOWN_ARROW && currentArrow.type === '↓') ||
+         (keyCode === LEFT_ARROW && currentArrow.type === '←'))
+      ) {
+        score++;
+        arrows.splice(i, 1); // Remove the arrow
+        break;
+      }
+    }
+  }
 }
 
-function showStartScreen() {
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
