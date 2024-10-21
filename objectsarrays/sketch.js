@@ -1,9 +1,9 @@
-// Project Title
-// Your Name
-// Date
+// Arrays and Object Notation Fish Tank Fun
+// Radia Jannat
+// October 20, 2025
 //
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// Use of WEBGL to make a 3d canvas
+// Use of trigenometry to animate in WEBGL
 
 let fishTankSize = 500; // Size of the fish tank
 let fish = [];
@@ -25,7 +25,7 @@ function setup() {
   // Create sand
   sand = new Sand();
 
-  // Create seaweeds
+  // Create seaweed
   for (let i = 0; i < 5; i++) {
     seaweeds.push(new Seaweed(random(-fishTankSize / 2 + 10, fishTankSize / 2 - 10), random(-fishTankSize / 2 + 10, fishTankSize / 2 - 10), random(50, 100)));
   }
@@ -34,21 +34,21 @@ function setup() {
 function draw() {
   background(107, 198, 254);  // Water colour background
 
-  // Set up pink lighting
+  // Pink lighting
   ambientLight(255, 105, 180); // Pink ambient light
-  pointLight(255, 105, 180, mouseX - width / 2, mouseY - height / 2, 200); // Pink point light
+  pointLight(255, 105, 180, mouseX - width / 2, mouseY - height / 2, 200); 
 
-  // Rotate the scene with mouse dragging
+  // Rotate the scene 
   rotateY(map(mouseX, 0, width, -PI, PI));
   rotateX(map(mouseY, 0, height, -PI / 2, PI / 2));
 
-  // Move and display each fish
+  // Move and show fish
   for (let f of fish) {
     f.move();
     f.display();
   }
 
-  // Move and display each bubble
+  // Move and show bubbles
   for (let b of bubbles) {
     b.move();
     b.display();
@@ -63,8 +63,8 @@ function draw() {
   }
 }
 
-// Handle mouse clicks
-function mousePressed() {
+// Mouse clicks on the fish
+function MousePressed() {
   for (let f of fish) {
     if (f.isMouseOver()) {
       f.hearts.push(new Heart(f.position.x, f.position.y, f.position.z)); // Create a new heart at the fish's position
@@ -79,24 +79,24 @@ class Fish {
       random(-fishTankSize / 2 + 20, fishTankSize / 2 - 20),
       random(-fishTankSize / 2 + 20, fishTankSize / 2 - 20)
     );
-    this.size = random(10, 20);
+    this.size = random(20, 30);
     this.speed = createVector(random(-1, 1), random(-1, 1), random(-1, 1));
     this.color = color(random(100, 255), random(100, 255), random(100, 255)); // Random color for the fish
     this.hearts = []; // Array to store hearts
   }
 
   move() {
-    this.position.add(this.speed);
-    // Bounce off walls
-    if (this.position.x < -fishTankSize / 2 || this.position.x > fishTankSize / 2) {
-      this.speed.x *= -1;
-    }
-    if (this.position.y < -fishTankSize / 2 || this.position.y > fishTankSize / 2) {
-      this.speed.y *= -1;
-    }
-    if (this.position.z < -fishTankSize / 2 || this.position.z > fishTankSize / 2) {
-      this.speed.z *= -1;
-    }
+      this.position.add(this.speed);
+      // Bounce off walls
+      if (this.position.x < -fishTankSize / 2 || this.position.x > fishTankSize / 2) {
+        this.speed.x *= -1;
+      }
+      if (this.position.y < -fishTankSize / 2 || this.position.y > fishTankSize / 2) {
+        this.speed.y *= -1;
+      }
+      if (this.position.z < -fishTankSize / 2 || this.position.z > fishTankSize / 2) {
+        this.speed.z *= -1;
+      }
 
     // Update hearts
     for (let i = this.hearts.length - 1; i >= 0; i--) {
