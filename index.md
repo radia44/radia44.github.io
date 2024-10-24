@@ -10,6 +10,7 @@
 - [Bubble Demo](bubble)
 - [Translate/Rotate Demo](translaterotate)
 - [Grid Demo](grid)
+- [Game of Life Demo](game-of-life)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
