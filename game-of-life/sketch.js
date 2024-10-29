@@ -11,6 +11,8 @@
 let grid;
 let cellSize;
 const GRID_SIZE = 40;
+const OPEN_TILE = 0;
+const IMPASSIBLE = 1;
 let shouldToggleNeighbours = false;
 let autoPlayIsOn = false;
 let renderOnFrameNumber =  5;
@@ -64,10 +66,10 @@ function toggleCell(x, y) {
   //make sure the cell you're toggling is in the grid
   if (x >= 0 && x < GRID_SIZE && y >= 0 && y < GRID_SIZE) {
     if (grid[y][x] === 0) {
-      grid[y][x] = 1;
+      grid[y][x] = IMPASSIBLE;
     }
-    else {
-      grid[y][x] = 0;
+    else if (grid[y][x] === IMPASSIBLE) {
+      grid[y][x] = OPEN_TILE;
     }
   }
 }
@@ -142,10 +144,10 @@ function updateGrid() {
 function displayGrid() {
   for (let y = 0; y < GRID_SIZE; y++) {
     for (let x = 0; x < GRID_SIZE; x++) {
-      if (grid[y][x] === 1) {
+      if (grid[y][x] === IMPASSIBLE) {
         fill("black");
       }
-      else if (grid[y][x] === 0) {
+      else if (grid[y][x] === OPEN_TILE) {
         fill("white");
       }
       square(x * cellSize, y * cellSize, cellSize);
@@ -161,10 +163,10 @@ function generateRandomGrid(cols, rows) {
     for (let x = 0; x < cols; x++) {
       //make it a 1 half the time, a 0 half the time
       if (random(100) < 50) {
-        newGrid[y].push(1);
+        newGrid[y].push(IMPASSIBLE);
       }
-      else {
-        newGrid[y].push(0);
+      else{
+        newGrid[y].push(OPEN_TILE);
       }
     }
   }

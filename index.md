@@ -12,6 +12,7 @@
 - [Grid Demo](grid)
 - [Game of Life Demo](game-of-life)
 - [Rectangular Grid](13-rectangle-grid)
+- [Character Grid](character-grid)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
