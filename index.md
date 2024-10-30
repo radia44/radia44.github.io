@@ -16,3 +16,4 @@
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
+- [2d Array](2d-array)
