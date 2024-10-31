@@ -150,7 +150,7 @@ function generateRandomGrid(cols, rows) {
         newGrid[y].push(OPEN_TILE);
       }
     }
-  }
+  } 
   return newGrid;
 }
 

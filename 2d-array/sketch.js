@@ -9,8 +9,6 @@
 //  [4, 5, 6]
 //  [7, 8, 9]];
 
-let paintingGrid;
-const PAINTING_GRID_SIZE = 3;
 
 function preload() {
   part001 = loadImage("image_part_001.jpg");
@@ -24,10 +22,45 @@ function preload() {
   part009 = loadImage("image_part_009.jpg");
 }
 
+let grid;
+let cellSize;
+const PAINTING_GRID_SIZE = 3;
+
 function setup() {
   createCanvas(668, 521);
+  cellSize = height / PAINTING_GRID_SIZE;
+  grid = generateRandomGrid(PAINTING_GRID_SIZE, PAINTING_GRID_SIZE);
 }
 
 function draw() {
-  background(0);
+  background(220);
+  displayGrid();
+}
+
+
+function generateRandomGrid(cols, rows) {
+  let newGrid = [];
+  for (let y = 0; y < rows; y++) {
+    newGrid.push([]);
+    for (let x = 0; x < cols; x++) {
+      //make it a 1 half the time, a 0 half the time
+      if (random(100) < 50) {
+        newGrid[y].push(1);
+      }
+      else {
+        newGrid[y].push(0);
+      }
+    }
+  }
+  return newGrid;
+}
+
+function displayGrid() {
+  for (let y = 0; y < PAINTING_GRID_SIZE; y++) {
+    for (let x = 0; x < PAINTING_GRID_SIZE; x++) {
+      fill("white");
+      stroke("black");
+      rect(x * cellSize, y * cellSize, width / PAINTING_GRID_SIZE, height / PAINTING_GRID_SIZE);
+    }
+  }
 }
