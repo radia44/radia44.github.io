@@ -9,6 +9,9 @@
 //  [4, 5, 6]
 //  [7, 8, 9]];
 
+let grid;
+let cellSize;
+const PAINTING_GRID_SIZE = 3;
 
 function preload() {
   part001 = loadImage("image_part_001.jpg");
@@ -22,9 +25,8 @@ function preload() {
   part009 = loadImage("image_part_009.jpg");
 }
 
-let grid;
-let cellSize;
-const PAINTING_GRID_SIZE = 3;
+let pictures  = [part001, part002, part003, part004, part005, part006, part007, part008, part009];
+
 
 function setup() {
   createCanvas(668, 521);
