@@ -9,29 +9,17 @@
 //  [4, 5, 6]
 //  [7, 8, 9]];
 
-let cellSize;
-const PAINTING_GRID_SIZE = 3; // 3x3 grid
-
-let part001, part002, part003, part004, part005, part006, part007, part008, part009;
-let pictures;
+let fullImage;
+const gridSize = 5;
+let slicedImages = [];
 
 function preload() {
-  part001 = loadImage("image_part_001.jpg");
-  part002 = loadImage("image_part_002.jpg");
-  part003 = loadImage("image_part_003.jpg");
-  part004 = loadImage("image_part_004.jpg");
-  part005 = loadImage("image_part_005.jpg");
-  part006 = loadImage("image_part_006.jpg");
-  part007 = loadImage("image_part_007.jpg");
-  part008 = loadImage("image_part_008.jpg");
-  part009 = loadImage("image_part_009.jpg");
-
-  pictures = [part001, part002, part003, part004, part005, part006, part007, part008, part009];
+  fullImage = loadImage("painting.jpg");
 }
 
 function setup() {
-  createCanvas(668, 521);
-  cellSize = width / PAINTING_GRID_SIZE; // Calculate cell size based on canvas width and grid size
+  createCanvas(640, 360);
+  sliceImageIntoGrid(fullImage, gridSize);
 }
 
 function draw() {
@@ -39,19 +27,30 @@ function draw() {
   displayGrid();
 }
 
-function displayGrid() {
-  let imgIndex = 0; // Track which image to display
 
-  for (let y = 0; y < PAINTING_GRID_SIZE; y++) {
-    for (let x = 0; x < PAINTING_GRID_SIZE; x++) {
-      // Calculate the top-left corner position for each cell
-      let xPos = x * cellSize;
-      let yPos = y * cellSize;
+// Function that slices the image into pieces for the grid
+function sliceImageIntoGrid(img, gridSize) {
+  let pieceWidth = img.width / gridSize;
+  let pieceHeight = img.height / gridSize;
+  
+  // Slice the image and store each piece in a 2d array
+  for (let y = 0; y < gridSize; y++) {
+    slicedImages.push([]);
+    for (let x = 0; x < gridSize; x++) {
+      let imgPiece = img.get(x * pieceWidth, y * pieceHeight, pieceWidth, pieceHeight);
+      slicedImages[y].push(imgPiece);
+    }
+  }
+}
 
-      // Display the image in the current cell
-      image(pictures[imgIndex], xPos, yPos, cellSize, cellSize);
-
-      imgIndex++; // Move to the next image in the array
+// Display each piece in the grid
+function displayGrid(){
+  let pieceWidth = width / gridSize;
+  let pieceHeight = height / gridSize;
+  
+  for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++){
+      image(slicedImages[y][x], x * pieceWidth, y * pieceHeight, pieceWidth, pieceHeight);
     }
   }
 }
