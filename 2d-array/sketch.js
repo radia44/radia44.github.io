@@ -11,6 +11,8 @@
 
 let fullImage;
 const gridSize = 5;
+const originalWidth = 640;
+const originalHeight = 370;
 let slicedImages = [];
 
 function preload() {
@@ -18,12 +20,12 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(640, 360);
+  createCanvas(windowWidth, windowHeight);
   sliceImageIntoGrid(fullImage, gridSize);
 }
 
 function draw() {
-  background(220);
+  background(0);
   displayGrid();
 }
 
@@ -45,12 +47,16 @@ function sliceImageIntoGrid(img, gridSize) {
 
 // Display each piece in the grid
 function displayGrid(){
-  let pieceWidth = width / gridSize;
-  let pieceHeight = height / gridSize;
+  let pieceWidth = originalWidth / gridSize;
+  let pieceHeight = originalHeight / gridSize;
+  
+  // Calculate offset to center the grid on the canvas
+  let xOffset = (width - originalWidth) / 2;
+  let yOffset = (height - originalHeight) / 2;
   
   for (let y = 0; y < gridSize; y++) {
     for (let x = 0; x < gridSize; x++){
-      image(slicedImages[y][x], x * pieceWidth, y * pieceHeight, pieceWidth, pieceHeight);
+      image(slicedImages[y][x], xOffset + x * pieceWidth, yOffset + y * pieceHeight, pieceWidth, pieceHeight);
     }
   }
 }
