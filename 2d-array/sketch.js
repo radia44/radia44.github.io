@@ -12,7 +12,11 @@
 let fullImage;
 const gridSize = 5;
 const originalWidth = 640;
+<<<<<<< HEAD
 const originalHeight = 360;
+=======
+const originalHeight = 370;
+>>>>>>> 8774479083b9779bbe1513fbd630894042e885d1
 let slicedImages = [];
 let rotations = [];
 
@@ -51,6 +55,7 @@ function sliceImageIntoGrid(img, gridSize) {
 }
 
 // Display each piece in the grid
+<<<<<<< HEAD
 function displayGrid() {
   let pieceWidth = originalWidth / gridSize;
   let pieceHeight = originalHeight / gridSize;
@@ -93,4 +98,19 @@ function mousePressed() {
       }
     }
   }
+=======
+function displayGrid(){
+  let pieceWidth = originalWidth / gridSize;
+  let pieceHeight = originalHeight / gridSize;
+  
+  // Calculate offset to center the grid on the canvas
+  let xOffset = (width - originalWidth) / 2;
+  let yOffset = (height - originalHeight) / 2;
+  
+  for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++){
+      image(slicedImages[y][x], xOffset + x * pieceWidth, yOffset + y * pieceHeight, pieceWidth, pieceHeight);
+    }
+  }
+>>>>>>> 8774479083b9779bbe1513fbd630894042e885d1
 }
