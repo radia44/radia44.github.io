@@ -11,46 +11,86 @@
 
 let fullImage;
 const gridSize = 5;
+const originalWidth = 640;
+const originalHeight = 360;
 let slicedImages = [];
+let rotations = [];
 
 function preload() {
   fullImage = loadImage("painting.jpg");
 }
 
 function setup() {
-  createCanvas(640, 360);
+  createCanvas(windowWidth, windowHeight);
   sliceImageIntoGrid(fullImage, gridSize);
 }
 
 function draw() {
-  background(220);
+  background(0);
   displayGrid();
 }
-
 
 // Function that slices the image into pieces for the grid
 function sliceImageIntoGrid(img, gridSize) {
   let pieceWidth = img.width / gridSize;
   let pieceHeight = img.height / gridSize;
-  
-  // Slice the image and store each piece in a 2d array
+
   for (let y = 0; y < gridSize; y++) {
     slicedImages.push([]);
+    rotations.push([]);  // Initialize each row in rotations
+
     for (let x = 0; x < gridSize; x++) {
       let imgPiece = img.get(x * pieceWidth, y * pieceHeight, pieceWidth, pieceHeight);
       slicedImages[y].push(imgPiece);
+
+      // Assign a random rotation (0, 90, 180, or 270 degrees)
+      let randomRotation = floor(random(4)) * 90;
+      rotations[y].push(randomRotation);
     }
   }
 }
 
 // Display each piece in the grid
-function displayGrid(){
-  let pieceWidth = width / gridSize;
-  let pieceHeight = height / gridSize;
-  
+function displayGrid() {
+  let pieceWidth = originalWidth / gridSize;
+  let pieceHeight = originalHeight / gridSize;
+
+  let xOffset = (width - originalWidth) / 2;
+  let yOffset = (height - originalHeight) / 2;
+
   for (let y = 0; y < gridSize; y++) {
-    for (let x = 0; x < gridSize; x++){
-      image(slicedImages[y][x], x * pieceWidth, y * pieceHeight, pieceWidth, pieceHeight);
+    for (let x = 0; x < gridSize; x++) {
+      push();  // Save transformation state
+
+      // Calculate position and rotation
+      translate(xOffset + x * pieceWidth + pieceWidth / 2, yOffset + y * pieceHeight + pieceHeight / 2);
+      rotate(radians(rotations[y][x]));
+
+      // Display the image piece centered on its grid cell
+      imageMode(CENTER);
+      image(slicedImages[y][x], 0, 0, pieceWidth, pieceHeight);
+
+      pop();  // Restore transformation state
+    }
+  }
+}
+
+// Rotate pieces on click to complete the puzzle
+function mousePressed() {
+  let pieceWidth = originalWidth / gridSize;
+  let pieceHeight = originalHeight / gridSize;
+  let xOffset = (width - originalWidth) / 2;
+  let yOffset = (height - originalHeight) / 2;
+
+  for (let y = 0; y < gridSize; y++) {
+    for (let x = 0; x < gridSize; x++) {
+      let px = xOffset + x * pieceWidth;
+      let py = yOffset + y * pieceHeight;
+
+      // Check if mouse is over the puzzle piece
+      if (mouseX > px && mouseX < px + pieceWidth && mouseY > py && mouseY < py + pieceHeight) {
+        rotations[y][x] = (rotations[y][x] + 90) % 360;  // Rotate by 90 degrees on each click
+      }
     }
   }
 }
