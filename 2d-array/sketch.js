@@ -29,6 +29,14 @@ function setup() {
 function draw() {
   background(0);
   displayGrid();
+  let s = millis() / 1000;
+  
+  textAlign(LEFT, CENTER);
+  textSize(10);
+  textFont('Courier New');
+  fill("white");
+  
+  text(`Time Elapsed: ${nf(s, 1, 1)} sec`, 5, 50, 90);
 }
 
 // Function that slices the image into pieces for the grid
