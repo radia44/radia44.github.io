@@ -16,6 +16,9 @@ const originalWidth = 640;
 const originalHeight = 360;
 let slicedImages = [];
 let rotations = [];
+let startTime;
+let endTime;
+let leaderboard = [];
 
 function preload() {
   fullImage = loadImage("painting.jpg");
@@ -24,23 +27,20 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   sliceImageIntoGrid(fullImage, gridSizeX, gridSizeY);
+  startTime = millis(); // Initialize start time
 }
 
 function draw() {
   background(0);
-  displayGrid();
 
-  let elapsedSeconds = millis() / 1000;
-  let minutes = floor(elapsedSeconds / 60); // Calculate minutes
-  let seconds = elapsedSeconds % 60; // Remaining seconds
-
-  textAlign(LEFT, CENTER);
-  textSize(10);
-  textFont('Courier New');
-  fill("white");
-
-  // Format and display the time as "minutes:seconds"
-  text(`Time Elapsed: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, 5, 50, 90);
+  if (isPuzzleSolved()) {
+    endTime = millis(); // Record end time when puzzle is solved
+    displaySolvedMessage();
+    noLoop(); // Stop the draw loop
+  } else {
+    displayGrid();
+    displayTimer();
+  }
 }
 
 // Function that slices the image into pieces for the grid
@@ -106,4 +106,43 @@ function mousePressed() {
       }
     }
   }
+}
+
+// Display the timer during the game
+function displayTimer() {
+  let elapsedSeconds = (millis() - startTime) / 1000;
+  let minutes = floor(elapsedSeconds / 60);
+  let seconds = elapsedSeconds % 60;
+
+  textAlign(LEFT, CENTER);
+  textSize(10);
+  textFont('Courier New');
+  fill("white");
+
+  // Format and display the time as "minutes:seconds"
+  text(`Time Elapsed: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, 5, 50, 90);
+}
+
+// Check if all pieces are correctly rotated
+function isPuzzleSolved() {
+  for (let y = 0; y < gridSizeY; y++) {
+    for (let x = 0; x < gridSizeX; x++) {
+      if (rotations[y][x] !== 0) {
+        return false; // Puzzle is not solved if any piece is not correctly rotated
+      }
+    }
+  }
+  return true; // Puzzle is solved
+}
+
+// Display final message when puzzle is solved
+function displaySolvedMessage() {
+  let totalTime = (endTime - startTime) / 1000;
+  let minutes = floor(totalTime / 60);
+  let seconds = totalTime % 60;
+
+  textAlign(CENTER, CENTER);
+  textSize(20);
+  fill("lime");
+  text(`Puzzle Solved!\nTime Taken: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, width / 2, height / 2);
 }
