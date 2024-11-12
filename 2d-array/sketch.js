@@ -1,9 +1,9 @@
-// Project Title
-// Your Name
-// Date
+// 2D Array Rotation Puzzle
+// Radia Jannat
+// November 12, 2024
 //
 // Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// I used the local storage to make a leaderboard that tracks the measures of times it took the user on a single PC to solve a puzzle.
 
 //const PUZZLE = [[1, 2, 3]
 //  [4, 5, 6]
@@ -44,7 +44,8 @@ function draw() {
     displaySolvedMessage();
     displayLeaderboard(); // Show leaderboard only after puzzle is solved
     noLoop(); // Stop the draw loop
-  } else {
+  } 
+  else {
     displayGrid();
     displayTimer();
   }
