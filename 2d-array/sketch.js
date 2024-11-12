@@ -19,6 +19,7 @@ let rotations = [];
 let startTime;
 let endTime;
 let leaderboard = [];
+let puzzleSolved = false;
 
 function preload() {
   fullImage = loadImage("painting.jpg");
@@ -28,14 +29,20 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   sliceImageIntoGrid(fullImage, gridSizeX, gridSizeY);
   startTime = millis(); // Initialize start time
+  loadLeaderboard(); // Load leaderboard from local storage
 }
 
 function draw() {
   background(0);
 
   if (isPuzzleSolved()) {
-    endTime = millis(); // Record end time when puzzle is solved
+    if (!puzzleSolved) {
+      puzzleSolved = true;
+      endTime = millis(); // Record end time when puzzle is solved
+      saveScore(); // Save the current score to leaderboard
+    }
     displaySolvedMessage();
+    displayLeaderboard(); // Show leaderboard only after puzzle is solved
     noLoop(); // Stop the draw loop
   } else {
     displayGrid();
@@ -144,5 +151,38 @@ function displaySolvedMessage() {
   textAlign(CENTER, CENTER);
   textSize(20);
   fill("lime");
-  text(`Puzzle Solved!\nTime Taken: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, width / 2, height / 2);
+  text(`Puzzle Solved!\nTime Taken: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, width / 2, height / 2 - 50);
+}
+
+// Save the current score to the leaderboard in local storage
+function saveScore() {
+  let totalTime = (endTime - startTime) / 1000;
+  leaderboard.push(totalTime);
+  leaderboard.sort((a, b) => a - b); // Sort scores in ascending order
+
+  localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+}
+
+// Load leaderboard from local storage
+function loadLeaderboard() {
+  let savedScores = localStorage.getItem('leaderboard');
+  if (savedScores) {
+    leaderboard = JSON.parse(savedScores);
+  }
+}
+
+// Display the leaderboard on the screen
+function displayLeaderboard() {
+  textAlign(LEFT, TOP);
+  textSize(12);
+  fill("white");
+  text("Leaderboard:", 10, 100);
+
+  for (let i = 0; i < leaderboard.length && i < 5; i++) { // Limit to top 5 scores
+    let time = leaderboard[i];
+    let minutes = floor(time / 60);
+    let seconds = time % 60;
+
+    text(`${i + 1}. ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, 10, 120 + i * 20);
+  }
 }
