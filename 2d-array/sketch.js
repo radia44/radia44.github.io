@@ -3,7 +3,7 @@
 // November 12, 2024
 //
 // Extra for Experts:
-// I used the local storage to make a leaderboard that tracks the measures of times it took the user on a single PC to solve a puzzle.
+// I used the local storage to make a leaderboard that tracks the measures of the times it took the user on a single PC on the same browser to solve a puzzle.
 
 //const PUZZLE = [[1, 2, 3]
 //  [4, 5, 6]
