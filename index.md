@@ -14,6 +14,7 @@
 - [Rectangular Grid](13-rectangle-grid)
 - [Character Grid](character-grid)
 - [Walker OOP](16-walker-oop)
+- [Walker OOP Array](17-walker-oop)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
