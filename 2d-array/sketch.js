@@ -20,6 +20,7 @@ let startTime;
 let endTime;
 let leaderboard = [];
 let puzzleSolved = false;
+let gameState = "start";
 
 function preload() {
   fullImage = loadImage("painting.jpg");
