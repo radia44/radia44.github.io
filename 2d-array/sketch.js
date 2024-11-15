@@ -159,7 +159,7 @@ function displayTimer() {
   text(`Time Elapsed: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, 5, 50, 90);
 }
 
-// Check if all pieces are correctly rotated
+// Check if all pieces are rotated correctly
 function isPuzzleSolved() {
   for (let y = 0; y < gridSizeY; y++) {
     for (let x = 0; x < gridSizeX; x++) {
@@ -200,7 +200,7 @@ function loadLeaderboard() {
   }
 }
 
-// Display the leaderboard on the screen
+// Display the leaderboard on the end screen
 function displayLeaderboard() {
   textAlign(LEFT, TOP);
   textSize(12);
