@@ -77,7 +77,7 @@ function keyPressed() {
   }
 }
 
-// Function that slices the image into pieces for the grid
+// Function that slices the image into a grid
 function sliceImageIntoGrid(img, gridSizeX, gridSizeY) {
   let pieceWidth = img.width / gridSizeX;
   let pieceHeight = img.height / gridSizeY;
@@ -122,7 +122,7 @@ function displayGrid() {
   }
 }
 
-// Rotate pieces on click to complete the puzzle
+// Rotate pieces on click
 function mousePressed() {
   if (gameState === "playing") {
     let pieceWidth = originalWidth / gridSizeX;
@@ -144,7 +144,7 @@ function mousePressed() {
   }
 }
 
-// Display the timer during the game
+// Display the timer while solving the puzzle
 function displayTimer() {
   let elapsedSeconds = (millis() - startTime) / 1000;
   let minutes = floor(elapsedSeconds / 60);
@@ -155,7 +155,7 @@ function displayTimer() {
   textFont('Courier New');
   fill("white");
 
-  // Format and display the time as "minutes:seconds"
+  // Display the time as "minutes:seconds"
   text(`Time Elapsed: ${nf(minutes, 2)}:${nf(seconds, 2, 1)} min`, 5, 50, 90);
 }
 
