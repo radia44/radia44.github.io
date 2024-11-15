@@ -20,7 +20,7 @@ let startTime;
 let endTime;
 let leaderboard = [];
 let puzzleSolved = false;
-let gameState = "start";
+let gameState = "start"; // New game state variable: "start", "playing", "solved"
 
 function preload() {
   fullImage = loadImage("painting.jpg");
@@ -29,26 +29,51 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   sliceImageIntoGrid(fullImage, gridSizeX, gridSizeY);
-  startTime = millis(); // Initialize start time
   loadLeaderboard(); // Load leaderboard from local storage
 }
 
 function draw() {
   background(0);
 
-  if (isPuzzleSolved()) {
-    if (!puzzleSolved) {
-      puzzleSolved = true;
-      endTime = millis(); // Record end time when puzzle is solved
-      saveScore(); // Save the current score to leaderboard
-    }
-    displaySolvedMessage();
-    displayLeaderboard(); // Show leaderboard only after puzzle is solved
-    noLoop(); // Stop the draw loop
+  if (gameState === "start") {
+    displayStartScreen();
   } 
-  else {
-    displayGrid();
-    displayTimer();
+  else if (gameState === "playing") {
+    if (isPuzzleSolved()) {
+      if (!puzzleSolved) {
+        puzzleSolved = true;
+        endTime = millis(); // Record end time when puzzle is solved
+        saveScore(); // Save the current score to leaderboard
+      }
+      displaySolvedMessage();
+      displayLeaderboard(); // Show leaderboard only after puzzle is solved
+      noLoop(); // Stop the draw loop
+    } 
+    else {
+      displayGrid();
+      displayTimer();
+    }
+  }
+}
+
+// Display the start screen with instructions
+function displayStartScreen() {
+  textAlign(CENTER, CENTER);
+  textSize(24);
+  fill("white");
+  text("Welcome to the Puzzle Game!", width / 2, height / 2 - 40);
+  textSize(16);
+  text("Rotate the puzzle pieces by clicking on them to complete the image.", width / 2, height / 2);
+  text("Press ENTER to start the game", width / 2, height / 2 + 40);
+}
+
+// Start the timer and change game state when ENTER is pressed
+function keyPressed() {
+  if (gameState === "start" && keyCode === ENTER) {
+    gameState = "playing"; // Switch to playing state
+    startTime = millis(); // Initialize start time
+    puzzleSolved = false; // Reset puzzle solved status
+    loop(); // Start the draw loop
   }
 }
 
@@ -99,19 +124,21 @@ function displayGrid() {
 
 // Rotate pieces on click to complete the puzzle
 function mousePressed() {
-  let pieceWidth = originalWidth / gridSizeX;
-  let pieceHeight = originalHeight / gridSizeY;
-  let xOffset = (width - originalWidth) / 2;
-  let yOffset = (height - originalHeight) / 2;
+  if (gameState === "playing") {
+    let pieceWidth = originalWidth / gridSizeX;
+    let pieceHeight = originalHeight / gridSizeY;
+    let xOffset = (width - originalWidth) / 2;
+    let yOffset = (height - originalHeight) / 2;
 
-  for (let y = 0; y < gridSizeY; y++) {
-    for (let x = 0; x < gridSizeX; x++) {
-      let px = xOffset + x * pieceWidth;
-      let py = yOffset + y * pieceHeight;
+    for (let y = 0; y < gridSizeY; y++) {
+      for (let x = 0; x < gridSizeX; x++) {
+        let px = xOffset + x * pieceWidth;
+        let py = yOffset + y * pieceHeight;
 
-      // Check if mouse is over the puzzle piece
-      if (mouseX > px && mouseX < px + pieceWidth && mouseY > py && mouseY < py + pieceHeight) {
-        rotations[y][x] = (rotations[y][x] + 90) % 360;  // Rotate by 90 degrees on each click
+        // Check if mouse is over the puzzle piece
+        if (mouseX > px && mouseX < px + pieceWidth && mouseY > py && mouseY < py + pieceHeight) {
+          rotations[y][x] = (rotations[y][x] + 90) % 360;  // Rotate by 90 degrees on each click
+        }
       }
     }
   }
