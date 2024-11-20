@@ -15,6 +15,8 @@
 - [Character Grid](character-grid)
 - [Walker OOP](16-walker-oop)
 - [Walker OOP Array](17-walker-oop)
+- [Fireworks OOP](18-fireworks)
+- [Movement OOP](19-movement)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
