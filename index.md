@@ -17,6 +17,7 @@
 - [Walker OOP Array](17-walker-oop)
 - [Fireworks OOP](18-fireworks)
 - [Movement OOP](19-movement)
+- [Collide 2d Library](20-collide)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
