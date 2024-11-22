@@ -6,20 +6,26 @@
 // - describe what you did to take this project "above and beyond"
 
 
+function setup() {
+  createCanvas(400, 400);
+}
+
 let hit = false;
 
 function draw() {
-    background(255);
-    rect(200, 200, 100, 150);
+  background(255);
+  rect(200, 200, 100, 150);
+  circle(mouseX, mouseY, 100);
 
-    hit = collidePointRect(mouseX, mouseY, 200, 200, 100, 150);
+  hit = collideRectCircle(200, 200, 100, 150, mouseX, mouseY, 100);
 
-    // Use vectors as input:
-    // const mouse      = createVector(mouseX, mouseY);
-    // const rect_start = createVector(200, 200);
-    // const rect_size  = createVector(50, 150);
-    // hit = collidePointRectVector(mouse, rect_start, rect_size);
+  // Use vectors as input:
+  // const mouse      = createVector(mouseX, mouseY);
+  // const rect_start = createVector(200, 200);
+  // const rect_size  = createVector(100, 150);
+  // const radius     = 100;
+  // hit = collideRectCircleVector(rect_start, rect_size, mouse, radius);
 
-    stroke(hit ? color('red') : 0);
-    print('colliding?', hit);
+  stroke(hit ? color('red') : 0);
+  print('colliding?', hit);
 }
