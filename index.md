@@ -18,6 +18,8 @@
 - [Fireworks OOP](18-fireworks)
 - [Movement OOP](19-movement)
 - [Collide 2d Library](20-collide)
+- [Local Storage Demo](21-local-storage)
+- [Inheritance Demo](22-inheritance)
 ## Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](objectsarrays)
